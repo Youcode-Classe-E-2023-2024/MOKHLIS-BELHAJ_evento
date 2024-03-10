@@ -31,27 +31,31 @@ class LoginController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $formFields = $request->validate([
-            "email" => ['required', 'email'],
-            "password" => 'required'
-        ]);
-    
-        $remember = $request->filled('remember');
-    
-        if (auth()->attempt($formFields, $remember)) {
-            $request->session()->regenerate();
-            if (auth()->user()->hasRole('admin')) {
-                return redirect('/dashboard')->with('login', true);
-            } else {
-                return redirect('/')->with('login', true);
-            }
-    
-            return redirect('/')->with("login", true);
-        }
-    
-        return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput();
+{
+    $formFields = $request->validate([
+        "email" => ['required', 'email'],
+        "password" => 'required'
+    ]);
+
+    $remember = $request->filled('remember');
+
+    $user = User::where('email', $formFields['email'])->first();
+
+    if ($user && !$user->banned) {
+        return back()->withErrors(['email' => 'Your account has been banned.'])->onlyInput();
     }
+
+    if (auth()->attempt($formFields, $remember)) {
+        $request->session()->regenerate();
+        if (auth()->user()->hasRole('admin')) {
+            return redirect('/dashboard')->with('login', true);
+        } else {
+            return redirect('/')->with('login', true);
+        }
+    }
+
+    return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput();
+}
 
     /**
      * Display the specified resource.

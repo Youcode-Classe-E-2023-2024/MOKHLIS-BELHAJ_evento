@@ -12,7 +12,8 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        //
+        $categories = categorie::all();
+        return view('admin.Categories',compact('categories'));
     }
 
     /**
@@ -20,7 +21,7 @@ class CategorieController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**
@@ -28,15 +29,28 @@ class CategorieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'categorie' => 'required|string|max:255', // Example validation rules
+        ]);
+    
+        // Create a new instance of your model and set the categorie attribute
+        $categorie = new Categorie();
+        $categorie->name = $validatedData['categorie'];
+        
+        // Save the model
+        $categorie->save();
+    
+        // Optionally, you can redirect the user back or to another page
+        return redirect()->back()->with('success', 'Categorie created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Categorie $categorie)
+    public function show($id)
     {
-        //
+        $categorie= Categorie::find($id);
+        return view('admin.categoriesEdit', compact('categorie'));
     }
 
     /**
@@ -50,16 +64,31 @@ class CategorieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Categorie $categorie)
+    public function update(Request $request, string $id)
     {
-        //
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'categorie' => 'required|string|max:255', // Assuming 'categorie' is the name field
+        ]);
+    
+        // Find the category by ID
+        $categorie = Categorie::findOrFail($id);
+    
+        // Update the name of the category
+        $categorie->name = $validatedData['categorie'];
+        $categorie->save();
+    
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Categorie updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categorie $categorie)
+    public function destroy( $id)
     {
-        //
+        $categorie = Categorie::find($id);
+        $categorie->delete();
+        return redirect()->back()->with('success', 'Categorie deleted successfully.');;
     }
 }

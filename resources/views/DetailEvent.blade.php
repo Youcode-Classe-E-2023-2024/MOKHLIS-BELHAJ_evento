@@ -10,31 +10,32 @@
     <!-- Fonts -->
 
     <!-- Styles -->
+    <style>
+     
+    </style>
 </head>
 <script src="https://cdn.tailwindcss.com"></script>
 
-<body>
-    <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-        <a href="{{ route('home') }}"
-            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
-       
-      
-         
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+          display: none;
+      }
+     /* Hide scrollbar for IE, Edge and Firefox */
+      .no-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+    }
+</style>
 
-        
-                <a href="{{ route('login') }}"
-                    class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">login</a>
-         
-   
-    </div>
-
-
-<section class="bg-gray-50 dark:bg-gray-900">
-  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-          {{-- <img class="w-8 h-8 mr-2" src="https://e7.pngegg.com/pngimages/845/884/png-clipart-email-address-newsletter-text-messaging-company-email-miscellaneous-angle-thumbnail.png" alt="logo">
-          newsletter     --}}
-          <svg width="317.505" class ='w-24    sm:w-44 '  height="85.303" viewBox="0 0 317.505 85.303" xmlns="http://www.w3.org/2000/svg">
+<body class="bg-gray-100">
+  
+    {{-- ------------------------ --}}
+    <nav class=" fixed w-full bg-gray-200  shadow shadow-gray-300 w-100 px-8 md:px-auto ">
+      <div class="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
+        <!-- Logo -->
+        <div class="text-indigo-500 md:order-1">
+          <!-- Heroicon - Chip Outline -->
+          <svg width="317.505" class ="h-10 w-40"  height="85.303" viewBox="0 0 317.505 85.303" xmlns="http://www.w3.org/2000/svg">
             <g id="svgGroup" stroke-linecap="round" fill-rule="evenodd" font-size="9pt" stroke="#8a0000"
                 stroke-width="0.25mm" fill="#2b0000"  style="stroke:#8a0000;stroke-width:0.25mm;fill:#2b0000">
                 <path
@@ -42,53 +43,84 @@
                     vector-effect="non-scaling-stroke" />
             </g>
         </svg>
-      </a>
-      <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Register
-              </h1>
-
-<form action="/register" method="post">
-    @csrf 
-    <div>
-        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-        <input type="text" id="name" name="name"  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{old('name')}}" autofocus>
-        @if ($errors->has('name'))
-            <div class="alert alert-danger">
-                <p class="text-red-600">{{ $errors->first('name') }}</p>
-            </div>
-            @endif
+        </div>
+        <div class="text-gray-500 order-3 w-full md:w-auto md:order-2">
+          <ul class="flex font-semibold justify-between">
+                    <!-- Active Link = text-indigo-500
+                    Inactive Link = hover:text-indigo-500 -->
+            <li class="md:px-4 md:py-2 text-indigo-500"><a href="{{ route('home') }}">Home</a></li>
+            @role('admin')
+            <li class="md:px-4 md:py-2 hover:text-indigo-400"><a href="{{route('dashboard')}}">Dashbaourd</a></li>
+            @endrole
+          </ul>
+        </div>
+        <div class="order-2 md:order-3 flex ">
+          @auth
+          <a class="px-4 py-2 text-indigo-500 text-xl   flex items-center gap-2"disabled> 
+            Welcome {{ auth()->user()->name }}
+                  </a>
+          <a href="{{ route('logout') }}" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2">
+                    <span>logout</span>
+                    <svg xmlns="http://www.w3.org/2000/svg"  class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+                    </svg>
+                  </a>
+                  @else
+          <a href="{{ route('login') }}" class="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg"  class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Login</span>
+                  </a>
+          <a href="{{ route('register') }}" class="ml-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"  viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+                    </svg>
+                    <span>register</span>
+                  </a>
+                  @endauth
+        </div>
+      </div>
+    </nav>  
     </div>
-    <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-            <input class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" id="email" name="email" value="{{old('email')}}">
-            @if ($errors->has('email'))
-            <div class="alert alert-danger">
-                <p class="text-red-600">{{ $errors->first('email') }}</p>
+    <div class="pt-36 bg-gray-100">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full lg:w-2/3 px-4 mb-8 lg:mb-0">
+                    <img class="w-full rounded-lg shadow-lg h-xl" src="{{$event->image}}" alt="Concert Image">
+                </div>
+                <div class="w-full lg:w-1/3 px-4">
+                    <h1 class="text-4xl font-bold mb-4">{{$event->titre}}</h1>
+                    <p class="text-lg mb-6">{{$event->description}}</p>
+                    <div class="mb-6 flex  ">
+                        <p class="text-xl font-bold mb-2">categorie:</p>
+                        <p class="ml-7 text-lg ">{{$event->categorie->name}}</p>
+                    </div>
+                    <div class="mb-6 flex">
+                        <p class="text-xl font-bold mb-2">When:</p>
+                        <p class="ml-7 text-lg">{{$event->date}}</p>
+                    </div>
+                    <div class="mb-6 flex">
+                        <p class="text-xl font-bold mb-2">Where:</p>
+                        <p class="ml-7 text-lg">{{$event->lieu->name}}</p>
+                    </div>
+                    <div class="mb-6 flex">
+                        <p class="text-xl font-bold mb-2">number of places:</p>
+                        <p class="ml-7 text-lg">{{$event->nombre_de_places}}</p>
+                    </div>
+                    <div class="mb-6 flex">
+                        <p class="text-xl font-bold mb-2">price:</p>
+                        <p class="ml-7 text-lg">{{$event->price}} DH</p>
+                    </div>
+                    <a  href="{{route('payment',$event->id)}}"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="button">
+                        Buy Tickets
+                </a>
+                </div>
             </div>
-            @endif
-        </div>
-        <div>
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-            <input type="password" id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{old('password')}}">
-            @if ($errors->has('password'))
-            <div class="alert alert-danger">
-                <p class="text-red-600">{{ $errors->first('password') }}</p>
-            </div>
-            @endif
-        </div>
-        <div>
-            <label for="password_confirmation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">password Confirmation</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{old('password_confirmation')}}">
-        </div>
-   
-    <div>
-    <div class="m-3 flex w-full justify-center">
-            <button class="px-4 py-2 border border-blue-500 border-4  rounded-md bg-blue-200">Register</button>
         </div>
     </div>
-
-</form>
+    
 </body>
 </html>
